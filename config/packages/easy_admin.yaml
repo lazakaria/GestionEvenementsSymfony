@@ -10,48 +10,45 @@ easy_admin:
            - {label: "TABLEAU DE BORD" }
            - label: "Utilisateur"
              children:
-                  - {entity: Utilisateur, label: "Liste utilisateur", icon: "th-list"}
-                  - {entity: Utilisateur, label: "Ajouter utilisateur", icon: "plus", params: {action: 'new'}}
+                  - {entity: Utilisateur, label: "Liste utilisateur",permission: 'ROLE_ADMIN', icon: "th-list"}
+                  - {entity: Utilisateur, label: "Ajouter utilisateur", icon: "plus",permission: 'ROLE_ADMIN', params: {action: 'new'}}
 
 
-           - label: "Evenement"
+           - label: "Evénement"
              children:
-                  - {entity: Evenement, label: "Liste Evenement", icon: "th-list"}
-                  - {entity: Evenement, label: "Ajouter Evenement", icon: "plus", params: {action: 'new'}}
+                  - {entity: Evenement, label: "Liste Evenement", permission: 'ROLE_COMITE', icon: "th-list"}
+                  - {entity: Evenement, label: "Ajouter Evenement" , icon: "plus",permission: 'ROLE_COMITE', params: {action: 'new'}}
                  # - {entity: Evenement, label: "Comité Evenement", icon: "tag"}
                  #- {entity: Evenement, label: "Session Evenement", icon: "credit-card"}
 
 
-           - label: "Comite"
+           - label: "Comité"
              children:
-                 - {entity: Comite, label: "Liste Comite", icon: "th-list"}
-                 - {entity: Comite, label: "Ajouter Comite", icon: "plus", params: {action: 'new'}}
+                 - {entity: Comite, label: "Liste Comite",permission: 'ROLE_ADMIN', icon: "th-list"}
+                 - {entity: Comite, label: "Ajouter Comite", icon: "plus",permission: 'ROLE_ADMIN', params: {action: 'new'}}
 
 
            - label: "Session"
              children:
-                 - {entity: Session, label: "Liste Session", icon: "th-list"}
-                 - {entity: Session, label: "Ajouter Session", icon: "plus", params: {action: 'new'}}
+                 - {entity: Session, label: "Liste Session",permission: 'ROLE_MODERATEUR', icon: "th-list"}
+                 - {entity: Session, label: "Ajouter Session", icon: "plus", permission: 'ROLE_MODERATEUR',  params: {action: 'new'}}
+
+           - label: "Conférence"
+             children:
+                 - {entity: Conference, label: "Liste Conference",permission: 'ROLE_ADMIN', icon: "th-list"}
+                 - {entity: Conference, label: "Ajouter Conference", icon: "plus",permission: 'ROLE_ADMIN', params: {action: 'new'}}
 
 
 
+           - {label: "Paramétres"}
+           - {entity: User, icone: "user" , permission: 'ROLE_SUPERADMIN'}
 
-
-           - {label: "Parametres"}
-           - {entity: User, icone: "user" , permission: 'ROLE_ADMIN'}
-
-   site_name: ' <img src="images\a.jpg" alt="Person" width="10" height="10">'
+   site_name: 'MA PAGE'
 
    user:
          display_name: false
          display_avatar: true
          name_property_path: 'Nom'
-        
-      
-
-
-
-
 
 
 
@@ -59,13 +56,11 @@ easy_admin:
      Evenement:
        class: App\Entity\Evenement
        list:
-
-           batch_actions: ['delete']
-           title: "Les evénements"
+         batch_actions: ['delete']
+         title: "Les evénements"
 
        form:
          fields:
-
            - {type: 'group',  icon: 'pencil', label: 'Infos', css_class: 'col-lg-7'}
            - { property: 'titre_evenement', type: 'text' }
            -  { property: 'type_evenement', type: 'text' }
@@ -73,24 +68,15 @@ easy_admin:
            - {type: 'group', icon: 'clip', label: 'Attachements', css_class: 'col-lg-5'}
            - { property: 'debut_evenement', type: 'date' }
            - { property: 'fin_evenement', type: 'date' }
-
          #  - { property: 'comites', label: 'comite', type: 'choice', type_options: { multiple: false } }
 
 
 
-
-
-
-
-     #        # List the entity class name you want to manage
      Utilisateur:
         class: App\Entity\Utilisateur
         label: "Utilisateur"
-
         form:
           fields:
-
-            
            - {type: 'group',  icon: 'pencil', label: 'Infos', css_class: 'col-lg-7'}
            - nom
            - prenom
@@ -98,15 +84,12 @@ easy_admin:
            -  {type: 'group', icon: 'clip', label: 'Attachements', css_class: 'col-lg-5'}
            - { property: 'fichierImage', type: 'vich_image' , label: 'Image' }
            - { property: 'fichierpdf_utlisateur', type: 'vich_image', label: 'Fichier PDF' }
-
            - {type: 'group', icon: 'th-list', label: 'Description', css_class: 'col-lg-8'}
            - { property: 'Description', type: 'text_editor' }
            - { property: 'createdAt', type: 'date' }
-
         list:
           batch_actions: ['delete']
           title: "Les utilisateurs"
-
           actions:
             - {name: 'show', icone: 'trash' , label: false , css_class: 'btn btn-info'}
             - {name: 'edit', icone: 'pencil' , label: false , css_class: 'btn btn-secondary'}
@@ -117,18 +100,10 @@ easy_admin:
             - nom
             - prenom
             - fonction
-
             - { property: 'Description', type: 'text' }
-
             - createdAt
             - { property: 'image', type: 'image', base_path: '%uploads_path%' }
             - { property: 'fichier_utlisateur', type: 'image  ', base_path: '%uploads_path%' }
-
-
-
-
-
-
 
 
 
@@ -141,6 +116,7 @@ easy_admin:
             fields: ['id', 'type_comite', 'membres_comite', { property: 'titre_evenement', label: 'Evenement' }]
 
 
+
      Session:
         class: App\Entity\Session
         label : "Session"
@@ -148,28 +124,39 @@ easy_admin:
           fields: ['id', 'titre_session', 'type_session', 'heure_session']
         form:
           fields:
-
-
             - {type: 'group',  icon: 'pencil', label: 'Infos', css_class: 'col-lg-7'}
             - titre_session
             - type_session
-
-
             - {type: 'group', icon: 'clip', label: 'Attachements', css_class: 'col-lg-5'}
             - { property: 'heure_session', type: 'time' }
             - { property: 'date_session', type: 'date' }
           #  - { property: 'comites', label: 'comite', type: 'choice', type_options: { multiple: false } }
 
 
+     Conference:
+        class: App\Entity\Conference
+        label : "Conference"
+        list:
+          fields: ['id', 'titre', 'descritpion',  'date', 'salle']
+        form:
+          fields:
+            - {type: 'group',  icon: 'pencil', label: 'Infos', css_class: 'col-lg-7'}
+            - titre
+            - salle
+            - descritpion
+            - {type: 'group', icon: 'clip', label: 'Attachements', css_class: 'col-lg-5'}
+            - { property: 'date', type: 'date' }
+          #  - { property: 'comites', label: 'comite', type: 'choice', type_options: { multiple: false } }
+
 
 
      User:
         class: App\Entity\User
-
         list:
-            item_permission: 'ROLE_ADMIN'
             batch_actions: ['delete']
             fields: ['id', 'email', 'password','roles' , 'nom' , 'prenom']
+
+
 
 
 
